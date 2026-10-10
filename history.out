@@ -1,0 +1,95 @@
+    1  nmcli device status
+    2  sudo nmcli connection modify enp0s1 ipv4.method auto
+    3  sudo hostnamectl set-hostname mephi-2026.domain.local
+    4  ping -c 5 8.8.8.8 > ~/ping.out
+    5  cat ping.out 
+    6  sudo dnf update
+    7  sudo dnf install nginx libcap-ng-utils
+    8  cd /tmp
+    9  ls -a
+   10  dnf download tcpdump
+   11  ls -a
+   12  sudo rpm -Uvh tcpdump-4.99.5-1.red80.aarch64.rpm
+   13  dnf history > ~/dnf.out
+   14  cat ~/dnf.out
+   15  cd ~
+   16  lsblk
+   17  sudo shutdown -h now
+   18  lsblk
+   19  sudo fdisk /dev/vdb
+   20  lsblk
+   21  sudo mkfs.ext4 -L MEPHI_WEB /dev/vdb1
+   22  sudo mkdir /mephi-web
+   23  sudo nano /etc/fstab
+   24  cat /etc/fstab 
+   25  sudo mount /mephi-web
+   26  sudo systemctl daemon-reload
+   27  findmnt /mephi-web
+   28  sudo systemctl enable --now nginx
+   29  journalctl -u nginx -b > ~/journalctl.out
+   30  cat journalctl.out 
+   31  sudo groupadd developers
+   32  sudo groupadd -g 4444 curators
+   33  sudo useradd -m -u 5501 -G developers user1
+   34  sudo useradd -m -u 5502 -G developers user2
+   35  sudo useradd -m -u 5503 -G developers user3
+   36  sudo useradd -m -G curators curator1
+   37  sudo useradd -m -G curators curator2
+   38  sudo mkdir -p /data/mephi-2026
+   39  sudo chown root:developers /data/mephi-2026
+   40  sudo chmod 2770 /data/mephi-2026/
+   41  sudo setfacl -m g:developers:rwx,g:curators:rx,o::--- /data/mephi-2026/
+   42  sudo setfacl -d -m g:developers:rwx,g:curators:rx,o::--- /data/mephi-2026/
+   43  getfacl /data/mephi-2026/
+   44  sudo -u user1 touch /data/mephi-2026/test.txt
+   45  ls /data/mephi-2026/
+   46  sudo ls /data/mephi-2026/
+   47  sudo -u user2 sh -c 'echo MEPHI > /data/mephi-2026/test.txt'
+   48  sudo -u curator1 cat /data/mephi-2026/test.txt
+   49  sudo -u curator1 sh -c 'echo TEST >> /data/mephi-2026/test.txt'
+   50  sudo setcap cap_net_raw,cap_net_admin+ep /usr/sbin/tcpdump
+   51  sudo getcap /usr/sbin/tcpdump
+   52  sudo getcap /usr/sbin/tcpdump > ~/getcap.out
+   53  sudo -u user1 tcpdump -c 5 -i any
+   54  getenforce
+   55  sudo semanage fcontext -a -t httpd_sys_content_t '/mephi-web(/.*)?'
+   56  sudo dnf search policycoreutils
+   57  ls -Zd /mephi-web/
+   58  sudo dnf install policycoreutils-python-utils
+   59  sudo semanage fcontext -a -t httpd_sys_content_t '/mephi-web(/.*)?'
+   60  sudo semanage fcontext -l -C
+   61  sudo restorecon -Rv /mephi-web
+   62  ls -Zd /mephi-web
+   63  sudo nano /etc/nginx/nginx.conf
+   64  cat /etc/nginx/nginx.conf
+   65  sudo nginx -t
+   66  sudo systemctl reload nginx
+   67  sudo touch /mephi-web/index.html
+   68  echo 'Hello from Student: M265834' > /mephi-web/index.html
+   69  sudo echo 'Hello from Student: M265834' > /mephi-web/index.html
+   70  sudo nano /mephi-web/index.html
+   71  curl http://localhost/
+   72  curl http://localhost/ > ~/curl.out
+   73  cat curl.out 
+   74  sudo cat /etc/pam.d/login
+   75  sudo nano /etc/security/access.conf
+   76  sudo nano /etc/pam.d/login 
+   77  sudo login curator1
+   78  sudo cat /etc/security/access.conf
+   79  sudo cat /etc/pam.d/login
+   80  history
+   81  sudo passwd curator1
+   82  sudo passwd user1
+   83  sudo nano /etc/security/pwquality.conf
+   84  sudo nano /etc/pam.d/system-auth
+   85  sudo nano /etc/login.defs 
+   86  sudo cat /etc/shadow
+   87  sudo chage -M 90 user1
+   88  sudo chage -M 90 user2
+   89  sudo chage -M 90 user3
+   90  sudo chage -M 90 curator1
+   91  sudo chage -M 90 curator2
+   92  sudo cat /etc/shadow
+   93  sudo -u user1 passwd
+   94  sudo passwd curator2
+   95  history > ~/history.out
